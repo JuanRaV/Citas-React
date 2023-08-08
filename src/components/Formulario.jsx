@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react"
-
+import Error from "./Error";
 
 const Formulario = ({pacientes,setPacientes}) => {
   const [nombre,setNombre] = useState('');
@@ -9,6 +9,11 @@ const Formulario = ({pacientes,setPacientes}) => {
   const [sintomas,setSintomas] = useState('');
   const[error,setError] = useState(false);
 
+  const generarId=()=>{
+    const random= Math.random().toString(36).substr(2)
+    const fecha = Date.now().toString(36)
+    return random+fecha
+  }
   const handleSubmit = (e)=>{
     e.preventDefault()
 
@@ -19,8 +24,16 @@ const Formulario = ({pacientes,setPacientes}) => {
     }
     //Desaparecer la alerta
     setError(false)
+
     ///Objeto de pacientes
-    const objetoPaciente = {nombre,propietario,email,fecha,sintomas}
+    const objetoPaciente = {
+      nombre,
+      propietario,
+      email,
+      fecha,
+      sintomas,
+      id: generarId()
+    }
 
     setPacientes([...pacientes,objetoPaciente])
     
@@ -46,10 +59,8 @@ const Formulario = ({pacientes,setPacientes}) => {
         
       >
         {error && 
-          (<div className="bg-red-600 text-white text-center p-3 uppercase font-bold mb-3 rounded-lg">
-            <p className="">Todos los campos son obligatorios</p>
-          </div>)
-        }
+          //Otra forma de pasar props
+          <Error>Todos los campos son obligatorio</Error>}
         <div className="mb-5">
           <label htmlFor="mascota" className="block text-gray-700 uppercase font-bold">
             Nombre Mascota
