@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react"
 import Error from "./Error";
 
-const Formulario = ({pacientes,setPacientes}) => {
+const Formulario = ({pacientes,setPacientes,paciente}) => {
   const [nombre,setNombre] = useState('');
   const [propietario,setPropietario] = useState('');
   const [email,setEmail] = useState('');
@@ -9,6 +9,20 @@ const Formulario = ({pacientes,setPacientes}) => {
   const [sintomas,setSintomas] = useState('');
   const[error,setError] = useState(false);
 
+  //Se ejecuta cuando paciente haya cambiado
+  useEffect(() => {
+    //Comprobamos que un objeto no esta vacio
+    if(Object.keys(paciente).length>0){
+      const { nombre,propietario,email,fecha,sintomas} = paciente
+      setNombre(nombre)
+      setPropietario(propietario)
+      setEmail(email)
+      setFecha(fecha)
+      setSintomas(sintomas)
+    }
+  }, [paciente])
+
+  
   const generarId=()=>{
     const random= Math.random().toString(36).substr(2)
     const fecha = Date.now().toString(36)
@@ -72,6 +86,7 @@ const Formulario = ({pacientes,setPacientes}) => {
             className="border-2 w-full p-2 mt-2 placeholder-indigo-400 rounded-md"
             value={nombre}
             onChange={(e)=>setNombre(e.target.value)}
+            
           />
         </div>
 
